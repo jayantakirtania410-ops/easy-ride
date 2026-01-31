@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Ride App</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; text-align: center; }
+        .header { background: #28a745; color: white; padding: 20px; font-size: 22px; font-weight: bold; }
+        .card { background: white; margin: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 88%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        button { width: 95%; padding: 14px; margin-top: 10px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        #lockScreen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ff4757; color: white; z-index: 9999; padding-top: 80px; }
+    </style>
+</head>
+<body>
+    <div class="header">Easy Ride App</div>
+    <div class="card">
+        <h3>🚕 কাস্টমার বুকিং</h3>
+        <input type="number" id="dist" placeholder="কত কিমি যাবেন?">
+        <button style="background:#28a745; color:white" onclick="calc()">ভাড়া চেক করুন</button>
+        <p id="fare" style="font-weight:bold; color:green;"></p>
+        <button style="background:#25D366; color:white" onclick="window.open('https://wa.me/916289071110')">WhatsApp-এ বুক করুন</button>
+    </div>
+    <div class="card">
+        <h3>👨‍✈️ ড্রাইভার প্যানেল</h3>
+        <input type="text" id="did" placeholder="আপনার ফোন নম্বর">
+        <button style="background:#007bff; color:white" onclick="checkSub()">লগইন করুন</button>
+    </div>
+    <div id="lockScreen">
+        <div style="background:white; color:black; margin:20px; padding:30px; border-radius:20px;">
+            <h2 style="color:red">আইডি লকড! 🔒</h2>
+            <p>সাপ্তাহিক ৫০ টাকা পেমেন্ট করুন।</p>
+            <p>UPI: <b>6289071110@ybl</b></p>
+            <button style="background:#28a745; color:white" onclick="location.reload()">Refresh</button>
+        </div>
+    </div>
+    <script>
+        function calc() { let d = document.getElementById('dist').value; document.getElementById('fare').innerText = "ভাড়া: ৳" + (d * 12); }
+        function checkSub() {
+            let id = document.getElementById('did').value;
+            let exp = localStorage.getItem(id);
+            if(!exp || new Date() > new Date(exp)) document.getElementById('lockScreen').style.display = 'block';
+            else alert("সচল আছে!");
+        }
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+    </script>
+</body>
+</html>
